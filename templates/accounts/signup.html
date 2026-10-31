@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - AI Interview Prep{% endblock %}
+{% block active_signup %}active{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card glass-card w-100 p-4 shadow-lg" style="max-width: 500px;">
+        <div class="text-center mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-3 mb-2" style="background: rgba(99, 102, 241, 0.15);">
+                <i class="bi bi-person-plus-fill fs-2" style="color: var(--accent-indigo);"></i>
+            </div>
+            <h2 class="h3 mb-1 font-brand">Create Account</h2>
+            <p class="text-muted small">Set up your profile to start AI practice runs</p>
+        </div>
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger py-2 small mb-3">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" name="username" maxlength="150" class="form-control" required id="id_username" placeholder="Choose a username" value="{{ form.username.value|default:'' }}">
+                {% if form.username.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.username.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" required id="id_email" placeholder="name@example.com" value="{{ form.email.value|default:'' }}">
+                {% if form.email.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.email.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_experience_level" class="form-label">Experience Level</label>
+                    <select name="experience_level" class="form-select" id="id_experience_level">
+                        {% for choice in form.fields.experience_level.choices %}
+                            <option value="{{ choice.0 }}" {% if form.experience_level.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_focus_area" class="form-label">Focus Area</label>
+                    <select name="focus_area" class="form-select" id="id_focus_area">
+                        {% for choice in form.fields.focus_area.choices %}
+                            <option value="{{ choice.0 }}" {% if form.focus_area.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password1" class="form-label">Password</label>
+                <input type="password" name="password1" class="form-control" required id="id_password1" placeholder="Enter secure password">
+                {% if form.password1.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.password1.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password2" class="form-label">Confirm Password</label>
+                <input type="password" name="password2" class="form-control" required id="id_password2" placeholder="Confirm your password">
+                {% if form.password2.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.password2.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-gradient w-100 mt-2">Get Started</button>
+        </form>
+
+        <div class="text-center mt-4 pt-2 border-top" style="border-color: var(--border-color) !important;">
+            <p class="small text-muted mb-0">Already have an account? <a href="{% url 'accounts:login' %}" class="text-decoration-none font-weight-bold" style="color: var(--accent-indigo);">Sign In</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Interview Practice System - Elevate Your Preparation{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Custom animations for Landing Page */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .animate-fade-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    .animate-float {
+        animation: float 4s ease-in-out infinite;
+    }
+
+    .hero-glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
+        top: -10%;
+        right: 10%;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .feature-card {
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(20, 184, 166, 0.4) !important;
+        box-shadow: 0 10px 30px rgba(20, 184, 166, 0.1) !important;
+    }
+
+    .step-badge {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-purple) 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="position-relative">
+    <div class="hero-glow"></div>
+    
+    <!-- Hero Section -->
+    <section class="py-5 my-md-5 animate-fade-up">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7 text-center text-lg-start">
+                <span class="badge rounded-pill px-3 py-2 mb-3" style="background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.25);">
+                    <i class="bi bi-stars me-1 text-warning"></i> Next Generation Mock Interviews
+                </span>
+                <h1 class="display-3 fw-extrabold text-white mb-3 brand-font" style="line-height: 1.15;">
+                    Master Mocks with <span class="bg-gradient text-transparent bg-clip-text" style="background: linear-gradient(135deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Feedback</span>
+                </h1>
+                <p class="lead text-secondary mb-4 fs-4" style="max-width: 600px;">
+                    Practice technical coding challenges, system design, and behavioral questions. Get instant score breakdowns, logical evaluation, and AI pointers.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard:home' %}" class="btn btn-gradient btn-lg px-4 py-3">
+                            Go to Dashboard <i class="bi bi-arrow-right-short ms-1 fs-5"></i>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:signup' %}" class="btn btn-gradient btn-lg px-4 py-3">
+                            Get Started Free <i class="bi bi-rocket-takeoff ms-2"></i>
+                        </a>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-outline-custom btn-lg px-4 py-3">
+                            Sign In <i class="bi bi-box-arrow-in-right ms-2"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-5 text-center position-relative">
+                <div class="animate-float">
+                    <div class="card glass-card p-4 border border-secondary shadow-lg mx-auto" style="max-width: 400px; border-color: rgba(255,255,255,0.06) !important;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-success-subtle text-success"><i class="bi bi-record-circle me-1"></i>Live AI grading</span>
+                            <span class="text-secondary small">Session ID #459</span>
+                        </div>
+                        <div class="text-start mb-4">
+                            <code class="text-info small">// Python candidate response</code>
+                            <pre class="bg-black bg-opacity-40 p-3 rounded text-start text-white-50 small mb-0 border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">def two_sum(nums, target):
+    seen = {}
+    for i, num in enumerate(nums):
+        diff = target - num
+        if diff in seen:
+            return [seen[diff], i]
+        seen[num] = i</pre>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between p-3 rounded" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2);">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-success fs-4 me-2"></i>
+                                <span class="text-white fw-bold">Optimal Solution</span>
+                            </div>
+                            <span class="text-indigo fw-extrabold" style="color: #a78bfa;">98/100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5 border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="text-center mb-5">
+            <h2 class="h1 text-white brand-font mb-2">Core Features</h2>
+            <p class="text-secondary" style="max-width: 600px; margin: 0 auto;">Everything you need to confidently ace complex software engineering, design, and product interviews.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card glass-card p-4 h-100 feature-card shadow-sm border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-indigo-subtle rounded-3 p-3 mb-4" style="background: rgba(99, 102, 241, 0.15);">
+                        <i class="bi bi-code-square fs-3" style="color: var(--accent-indigo);"></i>
+                    </div>
+                    <h4 class="h5 text-white mb-2 font-brand">Interactive Playground</h4>
+                    <p class="text-secondary small mb-0">Write code, test cases, and formulate architectural answers with structural feedback guides built-in.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card glass-card p-4 h-100 feature-card shadow-sm border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-teal-subtle rounded-3 p-3 mb-4" style="background: rgba(20, 184, 166, 0.15);">
+                        <i class="bi bi-cpu fs-3" style="color: var(--accent-teal);"></i>
+                    </div>
+                    <h4 class="h5 text-white mb-2 font-brand">Automated AI Feedback</h4>
+                    <p class="text-secondary small mb-0">Understand your architectural flaws and receive instant, personalized code updates and design optimization tips.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card glass-card p-4 h-100 feature-card shadow-sm border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-purple-subtle rounded-3 p-3 mb-4" style="background: rgba(139, 92, 246, 0.15);">
+                        <i class="bi bi-graph-up-arrow fs-3" style="color: var(--accent-purple);"></i>
+                    </div>
+                    <h4 class="h5 text-white mb-2 font-brand">Performance Metrics</h4>
+                    <p class="text-secondary small mb-0">Track scores over time. Monitor technical accuracy, behavioral metrics, and identify critical growth areas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5 border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h2 class="h1 text-white brand-font mb-4">How it works</h2>
+                <div class="d-flex align-items-start mb-4">
+                    <div class="step-badge me-3">1</div>
+                    <div>
+                        <h5 class="text-white mb-1">Pick a Question</h5>
+                        <p class="text-secondary small mb-0">Select custom challenges from Algorithms, System Design, or Behavioral modules depending on your career track.</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start mb-4">
+                    <div class="step-badge me-3">2</div>
+                    <div>
+                        <h5 class="text-white mb-1">Simulate & Respond</h5>
+                        <p class="text-secondary small mb-0">Enter your code in the code workspace or record a text-based response for behavioral scenario checks.</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start">
+                    <div class="step-badge me-3">3</div>
+                    <div>
+                        <h5 class="text-white mb-1">Evaluate and Iterate</h5>
+                        <p class="text-secondary small mb-0">Instantly generate code improvement suggestions, alternative paradigms, and scoring indicators.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card glass-card p-4 shadow border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <h4 class="text-white mb-3 font-brand">Our Philosophy</h4>
+                    <p class="text-secondary small">Traditional mock interviews are expensive and difficult to coordinate. Our goal is to provide a zero-friction playground powered by AI, replicating the exact testing parameters used by premier technology recruiters.</p>
+                    <p class="text-secondary small mb-0">Get quality analysis without scheduling conflicts. Practice any time, anywhere, and secure your dream engineering role.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="my-5 border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 mb-5">
+        <div class="text-center mb-5">
+            <h2 class="h1 text-white brand-font mb-2">Get in touch</h2>
+            <p class="text-secondary" style="max-width: 600px; margin: 0 auto;">Have feedback, ideas, or enterprise requirements? Message our team directly.</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card glass-card p-4 shadow border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <form onsubmit="event.preventDefault(); alert('Message sent! Thank you for reaching out.'); this.reset();" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="Your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" rows="4" placeholder="How can we help you?" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-gradient w-100">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

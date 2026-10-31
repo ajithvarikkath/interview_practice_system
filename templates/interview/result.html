@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Interview Result{% endblock %}
+
+{% block active_interview %}active{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card glass-card shadow-lg p-4">
+
+                <div class="text-center">
+
+                    <h1 class="mb-4">
+                        🤖 AI Interview Evaluation
+                    </h1>
+
+                    {% if answer.ai_score >= 80 %}
+
+                        <div class="display-1 text-success fw-bold">
+                            {{ answer.ai_score }}%
+                        </div>
+
+                    {% elif answer.ai_score >= 60 %}
+
+                        <div class="display-1 text-warning fw-bold">
+                            {{ answer.ai_score }}%
+                        </div>
+
+                    {% else %}
+
+                        <div class="display-1 text-danger fw-bold">
+                            {{ answer.ai_score }}%
+                        </div>
+
+                    {% endif %}
+
+                    <h3 class="mt-3">
+                        Overall Score
+                    </h3>
+
+                </div>
+
+                <hr>
+
+                <h4>Question</h4>
+
+                <div class="alert alert-dark">
+
+                    {{ answer.question.question_text }}
+
+                </div>
+
+                <h4>Your Answer</h4>
+
+                <div class="alert alert-secondary">
+
+                    {{ answer.user_answer }}
+
+                </div>
+
+                <h4>AI Feedback</h4>
+
+                <div class="alert alert-info">
+
+                    {{ answer.ai_feedback|linebreaks }}
+
+                </div>
+
+                <div class="progress mb-4" style="height:30px;">
+
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        style="width: {{ answer.ai_score }}%;">
+
+                        {{ answer.ai_score }}%
+
+                    </div>
+
+                </div>
+
+                <div class="text-center">
+
+                    <a href="{% url 'interview:question_list' %}"
+                       class="btn btn-primary btn-lg">
+
+                        Practice Another Question
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

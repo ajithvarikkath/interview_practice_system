@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - AI Interview Prep{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <!-- Profile info overview card -->
+        <div class="card glass-card text-center p-4 shadow">
+            <div class="mb-3 position-relative d-inline-block mx-auto">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}" class="rounded-circle shadow-sm border border-indigo border-3" style="width: 120px; height: 120px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-dark text-secondary mx-auto shadow-sm" style="width: 120px; height: 120px; background: rgba(255, 255, 255, 0.05) !important; border: 1px solid var(--border-color);">
+                        <i class="bi bi-person-fill" style="font-size: 4rem;"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <h3 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h3>
+            <p class="text-secondary small mb-3">@{{ user.username }}</p>
+            <span class="badge rounded-pill bg-indigo-subtle text-indigo px-3 py-2 mb-3" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-indigo); border: 1px solid rgba(99, 102, 241, 0.3);">
+                {{ user.focus_area }}
+            </span>
+            <div class="row text-center mt-3 pt-3 border-top" style="border-color: var(--border-color) !important;">
+                <div class="col-6 border-end" style="border-color: var(--border-color) !important;">
+                    <div class="h5 mb-0 text-white font-brand">Beginner</div>
+                    <small class="text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Level</small>
+                </div>
+                <div class="col-6">
+                    <div class="h5 mb-0 text-white font-brand">Active</div>
+                    <small class="text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">Status</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card glass-card p-4 shadow">
+            <h2 class="h3 mb-3 border-bottom pb-2" style="border-color: var(--border-color) !important;">
+                <i class="bi bi-person-gear me-2 text-indigo" style="color: var(--accent-indigo);"></i>Profile Settings
+            </h2>
+            
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger py-2 small mb-3">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_first_name" class="form-label">First Name</label>
+                        <input type="text" name="first_name" class="form-control" id="id_first_name" value="{{ form.first_name.value|default:'' }}" placeholder="First name">
+                        {% if form.first_name.errors %}
+                            <div class="text-danger small mt-1">{% for error in form.first_name.errors %}{{ error }}{% endfor %}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_last_name" class="form-label">Last Name</label>
+                        <input type="text" name="last_name" class="form-control" id="id_last_name" value="{{ form.last_name.value|default:'' }}" placeholder="Last name">
+                        {% if form.last_name.errors %}
+                            <div class="text-danger small mt-1">{% for error in form.last_name.errors %}{{ error }}{% endfor %}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" id="id_email" value="{{ form.email.value|default:'' }}" placeholder="email@example.com">
+                    {% if form.email.errors %}
+                        <div class="text-danger small mt-1">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="id_experience_level" class="form-label">Experience Level</label>
+                        <select name="experience_level" class="form-select" id="id_experience_level">
+                            {% for choice in form.fields.experience_level.choices %}
+                                <option value="{{ choice.0 }}" {% if form.experience_level.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="id_focus_area" class="form-label">Focus Area</label>
+                        <select name="focus_area" class="form-select" id="id_focus_area">
+                            {% for choice in form.fields.focus_area.choices %}
+                                <option value="{{ choice.0 }}" {% if form.focus_area.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_bio" class="form-label">Bio</label>
+                    <textarea name="bio" cols="40" rows="3" class="form-control" id="id_bio" placeholder="Tell us about your professional background...">{{ form.bio.value|default:'' }}</textarea>
+                    {% if form.bio.errors %}
+                        <div class="text-danger small mt-1">{% for error in form.bio.errors %}{{ error }}{% endfor %}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="id_profile_picture" class="form-label">Profile Picture</label>
+                    <input type="file" name="profile_picture" class="form-control" id="id_profile_picture">
+                    {% if user.profile_picture %}
+                        <div class="form-text text-muted mt-1">
+                            Currently: <a href="{{ user.profile_picture.url }}" target="_blank" class="text-decoration-none text-indigo">{{ user.profile_picture.name }}</a>
+                        </div>
+                    {% endif %}
+                    {% if form.profile_picture.errors %}
+                        <div class="text-danger small mt-1">{% for error in form.profile_picture.errors %}{{ error }}{% endfor %}</div>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 border-top pt-3" style="border-color: var(--border-color) !important;">
+                    <a href="{% url 'dashboard:home' %}" class="btn btn-outline-custom">Cancel</a>
+                    <button type="submit" class="btn btn-gradient">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
